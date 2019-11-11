@@ -1,12 +1,12 @@
 __pycache__
-src/sequences/*/*
+!src/sequences/*/*
 *.pyc
 .DS_Store
 node_modules
 *.pkl
 .ipynb_checkpoints
 bundle.js
-
+.idea/
 # virtual environment
 venv
 stop
