@@ -11,6 +11,7 @@ import argparse
 import os
 import shutil
 import signal
+import pandas as pd
 from config import RobotConfig
 from src import robot, sequence
 from src.server import server
@@ -272,19 +273,35 @@ def handle_input(robot, cmd, args=[]):
     global last_cmd, last_args
     idle_sep = '='
     # play sequence
-    if cmd == 's' or cmd == 'rand':
+    if cmd == 's' or cmd == 'rand' or cmd == 'f':
         # if random, choose random sequence
-        if cmd == 'rand':
+        if cmd == 'f':
+            '''set_sequence = ['yes','no']
+            for seq in set_sequence:
+                handle_input(robot,'s',[seq])
+                time.sleep(5)
+            return'''
+            file_name = input('Enter file name: ')
+            converted_data = pd.read_csv(file_name)
+            start_time = time.time()
+            for index,row in converted_data.iterrows():
+                current_time = time.time()
+                while current_time - start_time < row['time']:
+                    current_time = time.time()
+                handle_input(robot, 's', [row['gesture']])
+            return
+
+        elif cmd == 'rand':
             args = [random.choice(robot.seq_list.keys())]
         # default to not idling
         # idler = False
         # get sequence if not given
-        if not args:
+        elif not args:
             args = ['']
             # args[0] = raw_input('Sequence: ')
             seq = input('Sequence: ')
         else:
-            seq = args[0]
+            seq = args[0]#Commented by Janani
         # check if should be idler
         # elif (args[0] == 'idle'):
         #     args[0] = args[1]
