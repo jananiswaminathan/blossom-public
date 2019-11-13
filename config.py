@@ -16,6 +16,8 @@ class RobotConfig(object):
 
     def __init__(self):
         self.ports = pd.get_available_ports()
+        print("Priinting ports")
+        print(self.ports)
         # catch no available ports
         if (len(self.ports) == 0):
             self.ports = ['']
@@ -73,12 +75,57 @@ class RobotConfig(object):
                     },
                 }
             },
-            'test': {
+            'woody2': {
                 'controllers': {
+                    'my_dxl_controller': {
+                        'sync_read': False,
+                        'attached_motors': ['tower', 'bases', 'head'],
+                        'port': 'auto',
+                        'baudrate': 1000000,
+                        'protocol': 2
+                    }
                 },
                 'motorgroups': {
+                    'tower': ['tower_1', 'tower_2', 'tower_3'],
+                    'bases': ['base'],
+                    'head': ['ears']
                 },
                 'motors': {
+                    'tower_1': {
+                        'orientation': 'direct',
+                        'type': 'XL-320',
+                        'id': 1,
+                        'angle_limit': [-150.0, 150.0],
+                        'offset': 0.0
+                    },
+                    'tower_2': {
+                        'orientation': 'direct',
+                        'type': 'XL-320',
+                        'id': 2,
+                        'angle_limit': [-150.0, 150.0],
+                        'offset': 0.0
+                    },
+                    'tower_3': {
+                        'orientation': 'direct',
+                        'type': 'XL-320',
+                        'id': 3,
+                        'angle_limit': [-150.0, 150.0],
+                        'offset': 0.0
+                    },
+                    'base': {
+                        'orientation': 'direct',
+                        'type': 'XL-320',
+                        'id': 4,
+                        'angle_limit': [-150.0, 150.0],
+                        'offset': 0.0
+                    },
+                    'ears': {
+                        'orientation': 'direct',
+                        'type': 'XL-320',
+                        'id': 5,
+                        'angle_limit': [50, 130.0],
+                        'offset': 0.0
+                    },
                 }
             }
         }
@@ -142,7 +189,7 @@ class RobotConfig(object):
                 name, config = configs[i]
 
                 # MH: scanning doesn't seem to work for the usb hub. Doing this for now since we don't use multiple bots, but if we ever do...valid_port_for_robot probably won't work
-                valid_port = (len(names) == 1 or self.valid_port_for_robot(
+                valid_port = (self.valid_port_for_robot(
                     scanned_ids, config))
 
                 # remove missing motors
